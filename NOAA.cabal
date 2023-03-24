@@ -1,0 +1,39 @@
+cabal-version:      3.0
+name:               NOAA
+version:            0.1.0.0
+synopsis:           Climate data gathering
+
+-- A longer description of the package.
+-- description:
+homepage:
+
+-- A URL where users can report bugs.
+-- bug-reports:
+license:            MIT
+license-file:       LICENSE
+author:             Jim Aven
+maintainer:         jimaven@duck.com
+
+-- A copyright notice.
+-- copyright:
+category:           Web
+extra-source-files: CHANGELOG.md
+
+executable NOAA
+    main-is:          Main.hs
+
+    -- Modules included in this executable, other than Main.
+    other-modules: DataUtil
+
+    -- LANGUAGE extensions used by modules in this package.
+    other-extensions: OverloadedStrings
+                    , DeriveGeneric
+
+    build-depends:    base ^>=4.14.3.0
+                    , bytestring
+                    , http-conduit
+                    , aeson
+                    , text
+
+    hs-source-dirs:   app
+    default-language: Haskell2010
