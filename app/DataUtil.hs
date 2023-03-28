@@ -1,11 +1,17 @@
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings
+, FlexibleContexts #-}
 
-module DataUtil (requestResponse) where 
+
+module DataUtil (fetchData) where 
 
 import qualified Data.ByteString.Char8 as BC
 import qualified Data.ByteString.Lazy as L
 import Network.HTTP.Simple 
 import Control.Monad.IO.Class
+import DataJSON
+import Data.Aeson
+-- import Control.Error
+
 
 myToken :: BC.ByteString
 myToken = BC.pack "OKwlqqpFYrOdSUkTrrvwgMfmumXJzUlT"
@@ -14,7 +20,7 @@ noaaHost :: String
 noaaHost = "https://www.ncei.noaa.gov/cdo-web/api/v2"
 
 pathApi :: String
-pathApi = "/stations"
+pathApi = "/stations?locationid=FIPS:08117&datatypeid=SNOW&limit=50&startdate=2023-03-01"
 
 buildRequest :: BC.ByteString -> String ->
         String -> Request
@@ -26,13 +32,10 @@ buildRequest token host path =
 request :: Request
 request = buildRequest myToken noaaHost pathApi
 
-requestResponse :: IO ()
-requestResponse = 
-    httpLBS request >>= \res ->
-        httpLBS request >>= \response ->
-        let code = getResponseStatusCode response 
-        in if code == 200 
-            then 
-                let body = getResponseBody response 
-                in L.writeFile "data1.json" body
-            else print "Error writing file"
+fetchData :: Either String NOAAData
+fetchData = 
+    httpJSON request >>= \r -> 
+    if getResponseStatusCode r == 200 
+        then eitherDecode $ getResponseBody r
+        else Left "Bad URL request"
+        
