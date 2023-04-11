@@ -1,8 +1,25 @@
 module Main where
 
-import DataUtil
-
+import Utils.DataUtil
 import qualified Data.ByteString.Lazy as L
+import Network.HTTP.Simple
+import Control.Monad.Cont
+import Data.Aeson (Value)
+import Views.ViewMain
 
 main :: IO ()
-main = print "KHl;asdf"
+main = do
+
+    setupMainView
+
+    res <- makeRequest
+
+    print res
+    
+    
+        
+   
+                
+    
+    
+     
