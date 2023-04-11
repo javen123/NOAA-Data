@@ -15,12 +15,7 @@ data NOAAData = NOAAData {
     , name      :: T.Text
 } deriving (Show,Generic)
 
-newtype NOAADataTotal = NOAADataTotal {getNOAAData :: [NOAAData]} deriving (Show, Generic)
 
-instance FromJSON NOAADataTotal where
-  parseJSON = withArray "results" $ \y ->
-    fmap (\z -> NOAAData <$> z .: "elevation"
-                                  <*> z .: "latitude"
-                                  <*> z .: "longitude"
-                                  <*> z .: "name") y
+
+instance FromJSON NOAAData where
     
