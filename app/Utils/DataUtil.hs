@@ -30,8 +30,8 @@ buildRequest token host path =
     $ setRequestSecure True 
     $ parseRequest_ ("GET " ++ host ++ path)
 
-makeRequest :: MonadIO m => m (Either String [NOAAData])
+makeRequest :: MonadIO m => m (Either String NOAADataArray)
 makeRequest = do
     response <- httpLBS $ buildRequest myToken noaaHost pathApi
-    return (eitherDecode $ getResponseBody response :: Either String [NOAAData])
+    return (eitherDecode $ getResponseBody response :: Either String NOAADataArray)
     

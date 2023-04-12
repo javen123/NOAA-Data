@@ -6,6 +6,7 @@ import Network.HTTP.Simple
 import Control.Monad.Cont
 import Data.Aeson (Value)
 import Views.ViewMain
+import Models.DataJSON
 
 main :: IO ()
 main = do
@@ -14,12 +15,11 @@ main = do
 
     res <- makeRequest
 
-    print res
-    
-    
-        
+    case res of Left  x -> error x
+                Right a -> print a
+ 
    
-                
+             
     
     
      
